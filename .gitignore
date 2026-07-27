@@ -70,6 +70,9 @@ coverage.xml
 *.log
 *.log.*
 
+# Frontend log collection page
+!sentinelai-frontend/src/pages/logs/
+
 # Docker
 .docker/
 
