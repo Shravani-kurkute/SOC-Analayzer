@@ -1,0 +1,99 @@
+# Core Framework
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+pydantic==2.10.3
+pydantic-settings==2.7.0
+python-dotenv==1.0.1
+
+# Database
+sqlalchemy==2.0.36
+asyncpg==0.30.0
+psycopg2-binary==2.9.10
+alembic==1.14.0
+redis==5.2.1
+redis[hiredis]==5.2.1
+
+# Authentication & Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.18
+authlib==1.4.1
+bcrypt==4.2.1
+pyjwt==2.10.1
+
+# AI & Machine Learning
+google-generativeai==0.8.4
+openai==1.58.1
+scikit-learn==1.6.0
+pandas==2.2.3
+numpy==2.2.0
+joblib==1.4.2
+textblob==0.18.0.post0
+
+# Log Parsing & Data Processing
+pyarrow==18.1.0
+parquet==1.3.1
+python-magic==0.4.27
+lxml==5.3.0
+xmltodict==0.14.2
+pyyaml==6.0.2
+orjson==3.10.12
+msgpack==1.1.0
+cysimdjson>=21.11
+
+# Networking & HTTP
+httpx==0.28.1
+aiohttp==3.11.11
+websockets==14.1
+dnspython==2.7.0
+ipaddress==1.0.23
+
+# Task Queue & Scheduling
+celery==5.4.0
+celery[redis]==5.4.0
+flower==2.0.1
+APScheduler==3.10.4
+
+# Monitoring & Logging
+prometheus-client==0.21.1
+opentelemetry-api==1.29.0
+opentelemetry-sdk==1.29.0
+opentelemetry-instrumentation-fastapi==0.50b0
+structlog==24.4.0
+loguru==0.7.3
+sentry-sdk==2.19.0
+
+# Utilities
+python-dateutil==2.9.0.post0
+pytz==2024.2
+cryptography==44.0.0
+jinja2==3.1.4
+markdown==3.7.0
+tabulate==0.9.0
+yarl==1.18.3
+pydantic-extra-types==2.10.1
+pydantic[email-validator]==2.10.3
+
+# Rate Limiting
+slowapi==0.1.9
+limits==3.14.0
+
+# CORS & Middleware
+gunicorn==23.0.0
+
+# Testing
+pytest==8.3.4
+pytest-asyncio==0.24.0
+pytest-cov==6.0.0
+factory-boy==3.3.1
+faker==33.1.0
+pytest-mock==3.14.0
+pytest-benchmark==5.1.0
+
+# Development
+black==24.10.0
+isort==5.13.2
+ruff==0.8.2
+mypy==1.13.0
+pre-commit==4.0.1
+autoflake==2.3.1

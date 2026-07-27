@@ -1,0 +1,15 @@
+node_modules
+dist
+.git
+.gitignore
+*.md
+.env
+.env.*
+!.env.example
+coverage
+test-results
+__pycache__
+*.pyc
+.DS_Store
+.prettierrc
+.eslintrc.cjs
