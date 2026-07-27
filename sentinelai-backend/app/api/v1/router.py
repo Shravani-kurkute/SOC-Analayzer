@@ -15,6 +15,7 @@ from app.routers import (
     health,
     webhooks,
     analytics,
+    dashboard,
 )
 
 api_v1_router = APIRouter()
@@ -33,3 +34,4 @@ api_v1_router.include_router(integrations.router, prefix="/integrations", tags=[
 api_v1_router.include_router(admin.router, prefix="/admin", tags=["admin"])
 api_v1_router.include_router(webhooks.router, prefix="/webhooks", tags=["webhooks"])
 api_v1_router.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
+api_v1_router.include_router(dashboard.router, prefix="/dashboard", tags=["dashboard"])
