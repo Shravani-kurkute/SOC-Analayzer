@@ -1,6 +1,5 @@
 import { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from '@contexts/AuthContext';
 import { ThemeProvider } from '@contexts/ThemeContext';
 import { WebSocketProvider } from '@contexts/WebSocketContext';
 import { SidebarProvider } from '@contexts/SidebarContext';
@@ -44,177 +43,175 @@ const PageLoader = () => (
 export default function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="sentinelai-theme">
-      <AuthProvider>
-        <SidebarProvider>
-          <WebSocketProvider>
-            <Suspense fallback={<LoadingScreen />}>
-              <Routes>
-                <Route element={<PublicRoute />}>
-                  <Route element={<AuthLayout />}>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
-                    <Route path="/reset-password" element={<ResetPassword />} />
-                  </Route>
+      <SidebarProvider>
+        <WebSocketProvider>
+          <Suspense fallback={<LoadingScreen />}>
+            <Routes>
+              <Route element={<PublicRoute />}>
+                <Route element={<AuthLayout />}>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
                 </Route>
+              </Route>
 
-                <Route element={<ProtectedRoute />}>
-                  <Route element={<AppLayout />}>
-                    <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                    <Route
-                        path="/dashboard"
-                        element={
-                          <Suspense fallback={<PageLoader />}>
-                            <Dashboard />
-                          </Suspense>
-                        }
-                      />
-                    <Route
-                        path="/logs"
-                        element={
-                          <Suspense fallback={<PageLoader />}>
-                            <LogCollection />
-                          </Suspense>
-                        }
-                      />
-                    <Route
-                        path="/alerts"
+              <Route element={<ProtectedRoute />}>
+                <Route element={<AppLayout />}>
+                  <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                  <Route
+                      path="/dashboard"
                       element={
                         <Suspense fallback={<PageLoader />}>
-                          <Alerts />
+                          <Dashboard />
                         </Suspense>
                       }
                     />
-                    <Route
-                      path="/alerts/:id"
+                  <Route
+                      path="/logs"
                       element={
                         <Suspense fallback={<PageLoader />}>
-                          <AlertDetail />
+                          <LogCollection />
                         </Suspense>
                       }
                     />
-                    <Route
-                      path="/incidents"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <Incidents />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/incidents/:id"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <IncidentDetail />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/threats"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <Threats />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/threats/:id"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <ThreatDetail />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/assets"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <Assets />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/assets/:id"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <AssetDetail />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/reports"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <Reports />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/reports/builder"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <ReportBuilder />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/ai"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <AICenter />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/playbooks"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <Playbooks />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/playbooks/:id"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <PlaybookDetail />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/integrations"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <Integrations />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/settings/*"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <Settings />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/admin/*"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <Admin />
-                        </Suspense>
-                      }
-                    />
-                  </Route>
+                  <Route
+                      path="/alerts"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <Alerts />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/alerts/:id"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <AlertDetail />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/incidents"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <Incidents />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/incidents/:id"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <IncidentDetail />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/threats"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <Threats />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/threats/:id"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <ThreatDetail />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/assets"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <Assets />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/assets/:id"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <AssetDetail />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/reports"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <Reports />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/reports/builder"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <ReportBuilder />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/ai"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <AICenter />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/playbooks"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <Playbooks />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/playbooks/:id"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <PlaybookDetail />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/integrations"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <Integrations />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/settings/*"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <Settings />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/admin/*"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <Admin />
+                      </Suspense>
+                    }
+                  />
                 </Route>
+              </Route>
 
-                <Route path="/403" element={<Forbidden />} />
-                <Route path="/500" element={<ServerError />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </WebSocketProvider>
-        </SidebarProvider>
-      </AuthProvider>
+              <Route path="/403" element={<Forbidden />} />
+              <Route path="/500" element={<ServerError />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </WebSocketProvider>
+      </SidebarProvider>
     </ThemeProvider>
   );
 }
