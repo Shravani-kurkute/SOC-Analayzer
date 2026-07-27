@@ -1,0 +1,35 @@
+from fastapi import APIRouter
+
+from app.routers import (
+    auth,
+    alerts,
+    incidents,
+    threats,
+    assets as assets_router,
+    detection,
+    ai,
+    reports,
+    playbooks,
+    integrations,
+    admin,
+    health,
+    webhooks,
+    analytics,
+)
+
+api_v1_router = APIRouter()
+
+api_v1_router.include_router(health.router, tags=["health"])
+api_v1_router.include_router(auth.router, prefix="/auth", tags=["authentication"])
+api_v1_router.include_router(alerts.router, prefix="/alerts", tags=["alerts"])
+api_v1_router.include_router(incidents.router, prefix="/incidents", tags=["incidents"])
+api_v1_router.include_router(threats.router, prefix="/threats", tags=["threats"])
+api_v1_router.include_router(assets_router.router, prefix="/assets", tags=["assets"])
+api_v1_router.include_router(detection.router, prefix="/detection", tags=["detection"])
+api_v1_router.include_router(ai.router, prefix="/ai", tags=["ai"])
+api_v1_router.include_router(reports.router, prefix="/reports", tags=["reports"])
+api_v1_router.include_router(playbooks.router, prefix="/playbooks", tags=["playbooks"])
+api_v1_router.include_router(integrations.router, prefix="/integrations", tags=["integrations"])
+api_v1_router.include_router(admin.router, prefix="/admin", tags=["admin"])
+api_v1_router.include_router(webhooks.router, prefix="/webhooks", tags=["webhooks"])
+api_v1_router.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
