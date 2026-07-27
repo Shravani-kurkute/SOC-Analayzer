@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '@contexts/AuthContext';
-import { Activity, Eye, EyeOff, LogIn, Shield } from 'lucide-react';
+import { Activity, AlertCircle, Eye, EyeOff, LogIn, Shield } from 'lucide-react';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
@@ -15,15 +15,21 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setIsLoading(true);
     try {
       await login(email, password);
       navigate('/dashboard');
-    } catch {
-      // Error handled by context
+    } catch (err) {
+      const msg =
+        err && typeof err === 'object' && 'response' in err
+          ? (err as { response: { data: { detail?: string } } }).response?.data?.detail || 'Login failed'
+          : 'Login failed';
+      setError(msg);
     } finally {
       setIsLoading(false);
     }
@@ -48,6 +54,12 @@ export default function LoginPage() {
           <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
           <CardDescription>Sign in to your SentinelAI account</CardDescription>
         </CardHeader>
+        {error && (
+          <div className="mx-6 mb-2 flex items-center gap-2 rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+            <AlertCircle className="h-4 w-4 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
