@@ -23,6 +23,7 @@ const Reports = lazy(() => import('@pages/reports/ReportsPage'));
 const ReportBuilder = lazy(() => import('@pages/reports/ReportBuilderPage'));
 const Settings = lazy(() => import('@pages/settings/SettingsPage'));
 const AICenter = lazy(() => import('@pages/ai/AICenterPage'));
+const LogCollection = lazy(() => import('@pages/logs/LogCollectionPage'));
 const Playbooks = lazy(() => import('@pages/playbooks/PlaybooksPage'));
 const PlaybookDetail = lazy(() => import('@pages/playbooks/PlaybookDetailPage'));
 const Integrations = lazy(() => import('@pages/integrations/IntegrationsPage'));
@@ -60,15 +61,23 @@ export default function App() {
                   <Route element={<AppLayout />}>
                     <Route path="/" element={<Navigate to="/dashboard" replace />} />
                     <Route
-                      path="/dashboard"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <Dashboard />
-                        </Suspense>
-                      }
-                    />
+                        path="/dashboard"
+                        element={
+                          <Suspense fallback={<PageLoader />}>
+                            <Dashboard />
+                          </Suspense>
+                        }
+                      />
                     <Route
-                      path="/alerts"
+                        path="/logs"
+                        element={
+                          <Suspense fallback={<PageLoader />}>
+                            <LogCollection />
+                          </Suspense>
+                        }
+                      />
+                    <Route
+                        path="/alerts"
                       element={
                         <Suspense fallback={<PageLoader />}>
                           <Alerts />

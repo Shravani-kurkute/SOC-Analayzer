@@ -51,6 +51,7 @@ const navGroups: NavGroup[] = [
   {
     label: 'Operations',
     items: [
+      { label: 'Log Collection', path: '/logs', icon: FileText },
       { label: 'AI Center', path: '/ai', icon: Brain },
       { label: 'Playbooks', path: '/playbooks', icon: PlayCircle },
       { label: 'Reports', path: '/reports', icon: FileText },
