@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useAuth } from '@contexts/AuthContext';
+import { useAuth } from '@hooks/useAuth';
 import { Activity, AlertCircle, Eye, EyeOff, LogIn, Shield } from 'lucide-react';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
