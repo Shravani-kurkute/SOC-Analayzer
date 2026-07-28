@@ -17,6 +17,7 @@ from app.routers import (
     analytics,
     dashboard,
     logs,
+    correlation,
 )
 
 api_v1_router = APIRouter()
@@ -37,3 +38,4 @@ api_v1_router.include_router(webhooks.router, prefix="/webhooks", tags=["webhook
 api_v1_router.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
 api_v1_router.include_router(dashboard.router, prefix="/dashboard", tags=["dashboard"])
 api_v1_router.include_router(logs.router, prefix="/logs", tags=["logs"])
+api_v1_router.include_router(correlation.router, prefix="/correlation", tags=["correlation"])

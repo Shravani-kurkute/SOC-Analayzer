@@ -19,7 +19,7 @@ const TOKEN_KEY = 'sentinelai_auth_token';
 const REFRESH_KEY = 'sentinelai_refresh_token';
 const USER_KEY = 'sentinelai_user';
 
-const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 function getStoredToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
