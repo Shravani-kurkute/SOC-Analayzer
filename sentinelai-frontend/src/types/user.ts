@@ -1,25 +1,34 @@
 export interface User {
   id: string;
   email: string;
-  fullName: string;
+  full_name: string;
   role: 'admin' | 'analyst' | 'viewer';
-  isActive: boolean;
-  isMfaEnabled: boolean;
-  lastLogin: string | null;
-  createdAt: string;
-  avatar: string | null;
+  is_active: boolean;
+  mfa_enabled: boolean;
+  last_login: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
-export interface AuthTokens {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
+export interface AuthResponse {
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
+  expires_in: number;
+  user: User;
+}
+
+export interface TokenResponse {
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
+  expires_in: number;
 }
 
 export interface LoginCredentials {
   email: string;
   password: string;
-  mfaCode?: string;
+  mfa_code?: string;
 }
 
 export interface UserPreferences {
