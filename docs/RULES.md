@@ -35,17 +35,17 @@ SentinelAI's detection engine uses a modular rule system. Each rule is a self-co
 ```mermaid
 flowchart TB
     subgraph Engine["Detection Engine"]
-        R["Rule Registry<br/>19 Rules"]
+        R["Rule Registry - 19 Rules"]
         M["Module Dispatcher"]
         
         subgraph Modules["Detection Modules"]
-            SSH["SSH Module<br/>3 rules"]
-            AUTH["Auth Module<br/>3 rules"]
-            NET["Network Module<br/>3 rules"]
-            FW["Firewall Module<br/>2 rules"]
-            WEB["Web Module<br/>4 rules"]
-            LIN["Linux Module<br/>2 rules"]
-            WIN["Windows Module<br/>2 rules"]
+            SSH["SSH Module - 3 rules"]
+            AUTH["Auth Module - 3 rules"]
+            NET["Network Module - 3 rules"]
+            FW["Firewall Module - 2 rules"]
+            WEB["Web Module - 4 rules"]
+            LIN["Linux Module - 2 rules"]
+            WIN["Windows Module - 2 rules"]
         end
         
         E["Alert Generator"]

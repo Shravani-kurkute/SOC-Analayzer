@@ -100,7 +100,7 @@ sequenceDiagram
         end
         
         Auth->>Auth: Generate JWT pair
-        Note over Auth: Access: 15min expiry<br/>Refresh: 7 day rotation
+        Note over Auth: Access: 15min expiry - Refresh: 7 day rotation
         Auth-->>API: Token pair
         API-->>Client: 200 OK + tokens
     end

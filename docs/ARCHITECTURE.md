@@ -34,41 +34,41 @@ Each stage is independently deployable, fault-tolerant, and communicates via asy
 ```mermaid
 flowchart TB
     subgraph Sources["Log Sources"]
-        S1["Network Devices<br/>(Firewalls, Routers, Switches)"]
-        S2["Servers & Endpoints<br/>(Linux, Windows, MacOS)"]
-        S3["Cloud Services<br/>(AWS, Azure, GCP)"]
-        S4["Security Tools<br/>(IDS/IPS, AV, EDR)"]
-        S5["Custom Applications<br/>(REST APIs, Microservices)"]
+        S1["Network Devices - Firewalls / Routers"]
+        S2["Servers & Endpoints - Linux / Windows"]
+        S3["Cloud Services - AWS / Azure / GCP"]
+        S4["Security Tools - IDS/IPS / AV / EDR"]
+        S5["Custom Applications - REST APIs"]
     end
 
     subgraph Collection["Collection & Ingestion Layer"]
-        L1["Syslog Receiver<br/>(TCP/UDP/TLS)"]
-        L2["REST API Ingestion<br/>(/api/v1/webhooks/*)"]
-        L3["File Monitor<br/>(Agent-based)"]
-        L4["Cloud Connectors<br/>(S3, EventHub, Pub/Sub)"]
+        L1["Syslog Receiver - TCP/UDP/TLS"]
+        L2["REST API Ingestion - /api/v1/webhooks"]
+        L3["File Monitor - Agent-based"]
+        L4["Cloud Connectors - S3 / EventHub"]
     end
 
     subgraph Parsing["Parsing & Normalization Layer"]
-        P1["Syslog Parser<br/>(RFC 3164/5424)"]
-        P2["JSON Parser<br/>(ECS Format)"]
-        P3["XML Parser<br/>(CEF Format)"]
+        P1["Syslog Parser - RFC 3164/5424"]
+        P2["JSON Parser - ECS Format"]
+        P3["XML Parser - CEF Format"]
         P4["Windows EVTX Parser"]
         P5["CSV Parser"]
         P6["PCAP Parser"]
     end
 
     subgraph Correlation["Event Correlation Layer"]
-        C1["Time-Based<br/>(Same IP, Time Window)"]
-        C2["Sequence-Based<br/>(Attack Chains)"]
-        C3["Statistical<br/>(Anomaly Detection)"]
-        C4["Threat Intel<br/>(IOC Matching)"]
+        C1["Time-Based - Same IP / Time Window"]
+        C2["Sequence-Based - Attack Chains"]
+        C3["Statistical - Anomaly Detection"]
+        C4["Threat Intel - IOC Matching"]
     end
 
     subgraph Detection["Threat Detection Layer"]
-        D1["Detection Engine<br/>(19 Built-in Rules)"]
-        D2["Sigma Rules<br/>(Open Standard)"]
-        D3["MITRE ATT&CK<br/>Mapping Engine"]
-        D4["Risk Scoring<br/>(0-100 Weighted)"]
+        D1["Detection Engine - 19 Built-in Rules"]
+        D2["Sigma Rules - Open Standard"]
+        D3["MITRE ATT&CK Mapping Engine"]
+        D4["Risk Scoring - 0-100 Weighted"]
     end
 
     subgraph Response["Response & Management"]
@@ -86,16 +86,16 @@ flowchart TB
     end
 
     subgraph Storage["Data Storage Layer"]
-        ST1["PostgreSQL 17<br/>(Alerts, Incidents, Users)"]
-        ST2["Redis 7<br/>(Cache, Sessions, Pub/Sub)"]
-        ST3["JSONB Blob Storage<br/>(Raw & Enriched Events)"]
+        ST1["PostgreSQL 17 - Alerts / Incidents / Users"]
+        ST2["Redis 7 - Cache / Sessions / Pub/Sub"]
+        ST3["JSONB Blob - Raw & Enriched Events"]
     end
 
     subgraph Frontend["Presentation Layer"]
-        F1["React SPA<br/>(Vite + TypeScript)"]
-        F2["Real-time Dashboard<br/>(WebSocket + Redis)"]
-        F3["Analytics & Charts<br/>(Recharts)"]
-        F4["Flow Visualization<br/>(React Flow)"]
+        F1["React SPA - Vite + TypeScript"]
+        F2["Real-time Dashboard - WebSocket + Redis"]
+        F3["Analytics & Charts - Recharts"]
+        F4["Flow Visualization - React Flow"]
     end
 
     Sources --> Collection
@@ -263,26 +263,18 @@ sequenceDiagram
 
 ## 5. Technology Stack
 
-```mermaid
-quadrantChart
-    title Technology Stack by Category & Maturity
-    x-axis "Developer Experience" --> "Production Readiness"
-    y-axis "Data Layer" --> "Presentation Layer"
-    quadrant-1 "Core Infrastructure"
-    quadrant-2 "Frontend Technologies"
-    quadrant-3 "Data Technologies"
-    quadrant-4 "Integration Tools"
-    "FastAPI": [0.85, 0.40]
-    "PostgreSQL": [0.95, 0.15]
-    "React": [0.90, 0.75]
-    "Redis": [0.90, 0.20]
-    "TypeScript": [0.80, 0.70]
-    "Docker": [0.85, 0.30]
-    "Gemini AI": [0.70, 0.45]
-    "Nginx": [0.85, 0.25]
-    "Tailwind CSS": [0.75, 0.80]
-    "SQLAlchemy": [0.80, 0.35]
-```
+| Technology | Category | Maturity | Developer Experience |
+|------------|----------|----------|-------------------|
+| PostgreSQL 17 | Core Infrastructure | Production Ready | Excellent |
+| Docker 24 | Core Infrastructure | Production Ready | Excellent |
+| Redis 7 | Core Infrastructure | Production Ready | Excellent |
+| Nginx | Core Infrastructure | Production Ready | Excellent |
+| FastAPI 0.115 | Backend Framework | Production Ready | Excellent |
+| SQLAlchemy 2.0 | Backend ORM | Production Ready | Excellent |
+| React 18 | Frontend Framework | Production Ready | Excellent |
+| TypeScript 5.6 | Frontend Language | Production Ready | Excellent |
+| Tailwind CSS 3 | Frontend Styling | Production Ready | Excellent |
+| Gemini AI | AI Integration | Active Development | Good |
 
 ---
 
@@ -353,8 +345,8 @@ flowchart LR
     end
     
     subgraph AuthN["Authentication"]
-        JWT["JWT Access Tokens<br/>(15min expiry)"]
-        RT["Refresh Tokens<br/>(7 day rotation)"]
+        JWT["JWT Access Tokens - 15min expiry"]
+        RT["Refresh Tokens - 7 day rotation"]
         MFA["TOTP Multi-Factor"]
     end
     
@@ -366,7 +358,7 @@ flowchart LR
     
     subgraph Data["Data Security"]
         Encrypt["Encryption at Rest"]
-        Mask["Data Masking/PII"]
+        Mask["Data Masking / PII"]
         Backup["Automated Backups"]
     end
     
