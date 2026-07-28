@@ -54,33 +54,41 @@ The platform processes security events through a multi-stage pipeline — ingest
 ### Detection Categories
 
 ```mermaid
-mindmap
-  root((Detection Engine))
-    SSH
-      SSH-001: Brute Force Attack
-      SSH-002: Login After Brute Force
-      SSH-003: Direct Root Login
-    Authentication
-      AUTH-001: Password Spray Attack
-      AUTH-002: Credential Stuffing
-      AUTH-003: Impossible Travel
-    Network
-      NET-001: Port Scanning
-      NET-002: Internal Reconnaissance
-      NET-003: Lateral Movement
-    Firewall
-      FW-001: Excessive Denies
-      FW-002: Blocked Scanning
-    Web
-      WEB-001: SQL Injection
-      WEB-002: Cross-Site Scripting
-      WEB-003: Remote Code Execution
-      WEB-004: Path Traversal
-    Linux
-      LIN-001: Privilege Escalation
-      LIN-002: Cron Persistence
-    Windows
-      WIN-001: Privilege Escalation
+flowchart TD
+    DE["Detection Engine (19 Rules)"]
+
+    DE --> SSH["SSH (3 Rules)"]
+    DE --> AUTH["Authentication (3 Rules)"]
+    DE --> NET["Network (3 Rules)"]
+    DE --> FW["Firewall (2 Rules)"]
+    DE --> WEB["Web (4 Rules)"]
+    DE --> LIN["Linux (2 Rules)"]
+    DE --> WIN["Windows (2 Rules)"]
+
+    SSH --> S1["SSH-001: Brute Force"]
+    SSH --> S2["SSH-002: Login After Brute Force"]
+    SSH --> S3["SSH-003: Direct Root Login"]
+
+    AUTH --> A1["AUTH-001: Password Spray"]
+    AUTH --> A2["AUTH-002: Credential Stuffing"]
+    AUTH --> A3["AUTH-003: Impossible Travel"]
+
+    NET --> N1["NET-001: Port Scanning"]
+    NET --> N2["NET-002: Internal Recon"]
+    NET --> N3["NET-003: Lateral Movement"]
+
+    FW --> F1["FW-001: Excessive Denies"]
+    FW --> F2["FW-002: Blocked Scanning"]
+
+    WEB --> W1["WEB-001: SQL Injection"]
+    WEB --> W2["WEB-002: Cross-Site Scripting"]
+    WEB --> W3["WEB-003: Remote Code Execution"]
+    WEB --> W4["WEB-004: Path Traversal"]
+
+    LIN --> L1["LIN-001: Privilege Escalation"]
+    LIN --> L2["LIN-002: Cron Persistence"]
+
+    WIN --> X1["WIN-001: Privilege Escalation"]
 ```
 
 ---
@@ -97,24 +105,24 @@ flowchart TB
     end
 
     subgraph Pipeline["Processing Pipeline"]
-        C["Collection Engine<br/>Syslog / REST API / Agents"]
-        P["Parser<br/>Syslog / JSON / XML / EVTX / CSV / PCAP"]
-        COR["Correlation Engine<br/>Time / Sequence / Statistical"]
-        D["Detection Engine<br/>19 Rules / MITRE ATT&CK"]
+        C["Collection Engine - Syslog / REST API"]
+        P["Parser - Syslog / JSON / XML / EVTX / CSV"]
+        COR["Correlation Engine - Time / Sequence"]
+        D["Detection Engine - 19 Rules / MITRE ATT&CK"]
     end
 
     subgraph Response["Alerting & Response"]
-        A["Alert Generation<br/>Risk Scoring / Recommendations"]
-        I["Incident Management<br/>Grouping / Workflow / Assignment"]
+        A["Alert Generation - Risk Scoring"]
+        I["Incident Management - Grouping / Workflow"]
     end
 
     subgraph AI["AI Layer"]
-        AI_ENG["Gemini AI<br/>Analysis / Summarization / Chat"]
+        AI_ENG["Gemini AI - Analysis / Chat"]
     end
 
     subgraph Storage["Storage"]
-        PG[("PostgreSQL<br/>Alerts / Events / Users")]
-        RD[("Redis<br/>Cache / Pub/Sub / Sessions")]
+        PG[("PostgreSQL - Alerts / Events / Users")]
+        RD[("Redis - Cache / Pub/Sub / Sessions")]
     end
 
     Sources --> C
