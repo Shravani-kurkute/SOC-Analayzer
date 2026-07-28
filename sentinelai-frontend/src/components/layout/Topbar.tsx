@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSidebar } from '@contexts/SidebarContext';
 import { useTheme } from '@contexts/ThemeContext';
-import { useAuth } from '@contexts/AuthContext';
+import { useAuth } from '@hooks/useAuth';
 import { cn } from '@utils/cn';
 import {
   Menu,
@@ -227,16 +227,16 @@ export function Topbar() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="flex items-center gap-2 px-2">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="" alt={user?.fullName || 'User'} />
+                  <AvatarImage src="" alt={user?.full_name || 'User'} />
                   <AvatarFallback className="bg-primary/10 text-primary text-xs">
-                    {user?.fullName
-                      ? user.fullName.split(' ').map((n) => n[0]).join('').toUpperCase()
+                    {user?.full_name
+                      ? user.full_name.split(' ').map((n: string) => n[0]).join('').toUpperCase()
                       : 'SA'}
                   </AvatarFallback>
                 </Avatar>
                 <div className="hidden lg:flex flex-col items-start">
                   <span className="text-sm font-medium text-foreground">
-                    {user?.fullName || 'Analyst'}
+                    {user?.full_name || 'Analyst'}
                   </span>
                   <span className="text-[10px] text-muted-foreground capitalize">
                     {user?.role || 'Security Analyst'}
@@ -248,7 +248,7 @@ export function Topbar() {
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>
                 <div className="flex flex-col">
-                  <span>{user?.fullName || 'Security Analyst'}</span>
+                  <span>{user?.full_name || 'Security Analyst'}</span>
                   <span className="text-xs font-normal text-muted-foreground">
                     {user?.email || 'analyst@sentinelai.dev'}
                   </span>
