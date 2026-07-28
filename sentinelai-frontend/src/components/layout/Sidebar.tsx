@@ -17,6 +17,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Activity,
+  GitBranch,
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/ui/tooltip';
 import { ScrollArea } from '@components/ui/scroll-area';
@@ -52,6 +53,7 @@ const navGroups: NavGroup[] = [
     label: 'Operations',
     items: [
       { label: 'Log Collection', path: '/logs', icon: FileText },
+      { label: 'Correlation', path: '/correlation', icon: GitBranch },
       { label: 'AI Center', path: '/ai', icon: Brain },
       { label: 'Playbooks', path: '/playbooks', icon: PlayCircle },
       { label: 'Reports', path: '/reports', icon: FileText },

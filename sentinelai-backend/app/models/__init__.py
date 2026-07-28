@@ -6,5 +6,11 @@ from app.models.asset import Asset
 from app.models.log_source import LogSource
 from app.models.log_file import LogFile
 from app.models.ingestion_job import IngestionJob
+from app.models.correlation_group import CorrelationGroup
+from app.models.correlation_event import CorrelationEvent
 
-__all__ = ["User", "Alert", "Incident", "LogEntry", "Asset", "LogSource", "LogFile", "IngestionJob"]
+__all__ = [
+    "User", "Alert", "Incident", "LogEntry", "Asset",
+    "LogSource", "LogFile", "IngestionJob",
+    "CorrelationGroup", "CorrelationEvent",
+]
