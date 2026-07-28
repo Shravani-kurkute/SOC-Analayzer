@@ -36,3 +36,5 @@ class Alert(BaseModel):
     resolved_by: Mapped[str | None] = mapped_column(String(255), nullable=True)
     resolved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     incident_id: Mapped[str | None] = mapped_column(UUID(as_uuid=False), ForeignKey("incidents.id"), nullable=True)
+    correlation_group_id: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
+    recommendation: Mapped[str | None] = mapped_column(Text, nullable=True)

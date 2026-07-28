@@ -1,49 +1,28 @@
 import api from './api';
-import type { Alert, AlertStats } from '@typings/alert';
-import type { APIResponse, PaginatedResponse } from '@typings/api';
+import type { Alert, AlertListResponse, AlertStatsResponse } from '@typings/alert';
 
 export const alertService = {
-  async getAlerts(params?: Record<string, unknown>): Promise<APIResponse<PaginatedResponse<Alert>>> {
+  async getAlerts(params?: Record<string, unknown>): Promise<AlertListResponse> {
     const response = await api.get('/alerts', { params });
     return response.data;
   },
 
-  async getAlert(id: string): Promise<APIResponse<Alert>> {
+  async getAlert(id: string): Promise<Alert> {
     const response = await api.get(`/alerts/${id}`);
     return response.data;
   },
 
-  async updateAlertStatus(
-    id: string,
-    status: string,
-  ): Promise<APIResponse<Alert>> {
-    const response = await api.patch(`/alerts/${id}/status`, { status });
+  async updateAlert(id: string, data: Record<string, unknown>): Promise<Alert> {
+    const response = await api.patch(`/alerts/${id}`, data);
     return response.data;
   },
 
-  async assignToIncident(
-    alertId: string,
-    incidentId: string,
-  ): Promise<APIResponse<Alert>> {
-    const response = await api.post(`/alerts/${alertId}/assign`, { incident_id: incidentId });
+  async getStats(): Promise<AlertStatsResponse> {
+    const response = await api.get('/alerts/stats');
     return response.data;
   },
 
-  async getStats(filter?: Record<string, unknown>): Promise<APIResponse<AlertStats>> {
-    const response = await api.get('/alerts/stats', { params: filter });
-    return response.data;
-  },
-
-  async bulkUpdateStatus(
-    ids: string[],
-    status: string,
-  ): Promise<APIResponse<{ updated: number }>> {
-    const response = await api.post('/alerts/bulk/status', { ids, status });
-    return response.data;
-  },
-
-  async deleteAlert(id: string): Promise<APIResponse<null>> {
-    const response = await api.delete(`/alerts/${id}`);
-    return response.data;
+  async deleteAlert(id: string): Promise<void> {
+    await api.delete(`/alerts/${id}`);
   },
 };
