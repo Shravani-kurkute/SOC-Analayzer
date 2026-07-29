@@ -134,7 +134,7 @@ class CorrelationEngine:
                 status=session_data["status"],
                 attack_chain=session_data.get("attack_chain"),
                 description=session_data.get("description"),
-                metadata=session_data.get("metadata"),
+                extra_data=session_data.get("metadata"),
             )
             self.db.add(group)
             return group
@@ -158,7 +158,7 @@ class CorrelationEngine:
                 severity=event_data.get("severity"),
                 risk_score=event_data.get("risk_score"),
                 raw_message=event_data.get("raw_message"),
-                metadata=event_data.get("metadata"),
+                extra_data=event_data.get("metadata"),
             )
             self.db.add(event)
             return event

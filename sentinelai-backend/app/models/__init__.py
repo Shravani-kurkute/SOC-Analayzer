@@ -8,9 +8,10 @@ from app.models.log_file import LogFile
 from app.models.ingestion_job import IngestionJob
 from app.models.correlation_group import CorrelationGroup
 from app.models.correlation_event import CorrelationEvent
+from app.models.ioc_entry import IocEntry
 
 __all__ = [
     "User", "Alert", "Incident", "LogEntry", "Asset",
     "LogSource", "LogFile", "IngestionJob",
-    "CorrelationGroup", "CorrelationEvent",
+    "CorrelationGroup", "CorrelationEvent", "IocEntry",
 ]

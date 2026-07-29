@@ -24,6 +24,7 @@ const Settings = lazy(() => import('@pages/settings/SettingsPage'));
 const AICenter = lazy(() => import('@pages/ai/AICenterPage'));
 const LogCollection = lazy(() => import('@pages/logs/LogCollectionPage'));
 const Correlation = lazy(() => import('@pages/correlation/CorrelationPage'));
+const IocExplorer = lazy(() => import('@pages/ioc/IocPage'));
 const Playbooks = lazy(() => import('@pages/playbooks/PlaybooksPage'));
 const PlaybookDetail = lazy(() => import('@pages/playbooks/PlaybookDetailPage'));
 const Integrations = lazy(() => import('@pages/integrations/IntegrationsPage'));
@@ -75,14 +76,22 @@ export default function App() {
                           </Suspense>
                         }
                       />
-                    <Route
-                        path="/correlation"
-                        element={
-                          <Suspense fallback={<PageLoader />}>
-                            <Correlation />
-                          </Suspense>
-                        }
-                      />
+                  <Route
+                      path="/correlation"
+                      element={
+                        <Suspense fallback={<PageLoader />}>
+                          <Correlation />
+                        </Suspense>
+                      }
+                    />
+                  <Route
+                      path="/ioc"
+                      element={
+                        <Suspense fallback={<PageLoader />}>
+                          <IocExplorer />
+                        </Suspense>
+                      }
+                    />
                   <Route
                       path="/alerts"
                     element={

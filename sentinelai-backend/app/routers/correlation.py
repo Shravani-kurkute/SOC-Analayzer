@@ -156,7 +156,7 @@ async def get_correlation_group(
             "severity": e.severity,
             "risk_score": e.risk_score,
             "raw_message": e.raw_message,
-            "metadata": e.metadata,
+            "metadata": e.extra_data,
             "created_at": e.created_at,
         }
         for e in events

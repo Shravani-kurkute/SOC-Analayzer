@@ -23,7 +23,7 @@ class CorrelationGroup(BaseModel):
     risk_score: Mapped[float] = mapped_column(Float, default=0.0, nullable=False)
     status: Mapped[str] = mapped_column(String(20), default="open", nullable=False)
     attack_chain: Mapped[list[str] | None] = mapped_column(JSONB, nullable=True)
-    metadata: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
+    extra_data: Mapped[dict[str, Any] | None] = mapped_column("metadata", JSONB, nullable=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     events = relationship("CorrelationEvent", back_populates="group", lazy="selectin")
