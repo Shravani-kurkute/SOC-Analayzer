@@ -10,6 +10,7 @@ from app.models.correlation_group import CorrelationGroup
 from app.models.correlation_event import CorrelationEvent
 from app.models.ioc_entry import IocEntry
 from app.models.mitre_technique import MitreTechnique, MitreMapping, CoverageStatistic
+from app.models.parsed_event import ParsedEvent
 
 __all__ = [
     "User", "Alert", "Incident", "LogEntry", "Asset",
