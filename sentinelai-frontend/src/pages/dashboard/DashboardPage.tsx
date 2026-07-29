@@ -16,6 +16,7 @@ import {
   FileText,
   TrendingUp,
   Network,
+  Hash,
 } from 'lucide-react'
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
@@ -27,6 +28,7 @@ import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import { Skeleton } from '@components/ui/skeleton'
 import { PageHeader } from '@components/common/PageHeader'
+import { iocService } from '@services/iocService'
 import { dashboardService } from '@services/dashboardService'
 import type {
   RecentAlertItem,
@@ -173,8 +175,15 @@ export default function DashboardPage() {
     refetchInterval: 30_000,
   })
 
+  const iocStatsQuery = useQuery({
+    queryKey: ['dashboard-ioc-stats'],
+    queryFn: iocService.getStats,
+    refetchInterval: 30_000,
+  })
+
   const summary = summaryQuery.data
   const charts = chartsQuery.data
+  const iocStats = iocStatsQuery.data
 
   return (
     <div className="space-y-6">
@@ -272,6 +281,15 @@ export default function DashboardPage() {
           Array.from({ length: 8 }).map((_, i) => <StatSkeleton key={i} />)
         )}
       </div>
+
+      {iocStats && (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard title="Total IOCs" value={formatNumber(iocStats.total)} description="Extracted indicators" icon={Shield} variant="info" />
+          <StatCard title="Unique IPs" value={formatNumber(iocStats.unique_ips)} description="IPv4 & IPv6 addresses" icon={Globe} variant="info" />
+          <StatCard title="Unique Domains" value={formatNumber(iocStats.unique_domains)} description="Domain indicators" icon={Globe} variant="warning" />
+          <StatCard title="Unique Hashes" value={formatNumber(iocStats.unique_hashes)} description="MD5, SHA1, SHA256" icon={Hash} variant="danger" />
+        </div>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
         {charts ? (

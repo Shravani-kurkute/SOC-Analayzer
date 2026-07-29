@@ -18,6 +18,7 @@ from app.routers import (
     dashboard,
     logs,
     correlation,
+    ioc,
 )
 
 api_v1_router = APIRouter()
@@ -39,3 +40,4 @@ api_v1_router.include_router(analytics.router, prefix="/analytics", tags=["analy
 api_v1_router.include_router(dashboard.router, prefix="/dashboard", tags=["dashboard"])
 api_v1_router.include_router(logs.router, prefix="/logs", tags=["logs"])
 api_v1_router.include_router(correlation.router, prefix="/correlation", tags=["correlation"])
+api_v1_router.include_router(ioc.router, prefix="/ioc", tags=["ioc"])

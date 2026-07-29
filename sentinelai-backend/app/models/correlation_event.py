@@ -27,6 +27,6 @@ class CorrelationEvent(BaseModel):
     severity: Mapped[str | None] = mapped_column(String(20), nullable=True)
     risk_score: Mapped[float | None] = mapped_column(Float, nullable=True)
     raw_message: Mapped[str | None] = mapped_column(Text, nullable=True)
-    metadata: Mapped[dict[str, Any] | None] = mapped_column(JSONB, nullable=True)
+    extra_data: Mapped[dict[str, Any] | None] = mapped_column("metadata", JSONB, nullable=True)
 
     group = relationship("CorrelationGroup", back_populates="events")
