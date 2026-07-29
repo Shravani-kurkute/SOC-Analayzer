@@ -35,6 +35,8 @@ import { mitreService } from '@services/mitreService'
 import { iocService } from '@services/iocService'
 import { dashboardService } from '@services/dashboardService'
 import { reportService } from '@services/reportService'
+import { LiveActivityFeed } from '@components/notifications/LiveActivityFeed'
+import { SystemStatus } from '@components/notifications/SystemStatus'
 import type {
   RecentAlertItem,
   RecentIncidentItem,
@@ -351,6 +353,13 @@ export default function DashboardPage() {
           <StatCard title="Recent Reports" value={formatNumber(reportStatsQuery.data.recent_reports.length)} description="Last 5 reports" icon={FileText} variant="info" />
         </div>
       )}
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <LiveActivityFeed />
+        </div>
+        <SystemStatus />
+      </div>
 
       <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
         {charts ? (

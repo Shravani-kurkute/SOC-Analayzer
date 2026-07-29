@@ -6,6 +6,7 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 from app.api.v1.router import api_v1_router
+from app.routers.ws import router as ws_router
 from app.core.config import settings
 from app.core.events import lifespan
 from app.core.logging import setup_logging
@@ -68,6 +69,7 @@ def create_app() -> FastAPI:
     app.add_middleware(AuditMiddleware)
 
     app.include_router(api_v1_router, prefix=settings.API_V1_STR)
+    app.include_router(ws_router)
 
     @app.get("/health", tags=["health"])
     async def health_check():
