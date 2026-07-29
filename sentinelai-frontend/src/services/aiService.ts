@@ -1,33 +1,44 @@
-import api from './api';
+import api from './api'
+import type { AIInvestigation, AIInvestigationListItem, AIInvestigationStats } from '@typings/ai'
+
+export interface PaginatedResponse<T> {
+  items: T[]
+  total: number
+  page: number
+  page_size: number
+  total_pages: number
+  has_next: boolean
+  has_prev: boolean
+}
+
+export interface ApiResponse<T> {
+  success: boolean
+  message: string
+  data: T
+}
 
 export const aiService = {
-  async analyzeAlert(alertId: string) {
-    const response = await api.post('/ai/analyze', { alert_id: alertId });
-    return response.data;
+  async investigate(incidentId: string, provider?: string): Promise<AIInvestigation> {
+    const response = await api.post(`/ai/investigate/${incidentId}`, provider ? { provider } : {})
+    return (response.data as ApiResponse<AIInvestigation>).data
   },
 
-  async analyzeIncident(incidentId: string) {
-    const response = await api.post('/ai/analyze', { incident_id: incidentId });
-    return response.data;
+  async getReport(incidentId: string): Promise<AIInvestigation> {
+    const response = await api.get(`/ai/report/${incidentId}`)
+    return (response.data as ApiResponse<AIInvestigation>).data
   },
 
-  async chat(message: string, context?: Record<string, unknown>) {
-    const response = await api.post('/ai/chat', { message, context });
-    return response.data;
+  async listHistory(page = 1, pageSize = 20): Promise<PaginatedResponse<AIInvestigationListItem>> {
+    const response = await api.get('/ai/history', { params: { page, page_size: pageSize } })
+    return (response.data as ApiResponse<PaginatedResponse<AIInvestigationListItem>>).data
   },
 
-  async summarize(text: string) {
-    const response = await api.post('/ai/summarize', { text });
-    return response.data;
+  async deleteHistory(investigationId: string): Promise<void> {
+    await api.delete(`/ai/history/${investigationId}`)
   },
 
-  async enrichIndicator(indicator: string, type: string) {
-    const response = await api.post('/ai/enrich', { indicator, type });
-    return response.data;
+  async getStats(): Promise<AIInvestigationStats> {
+    const response = await api.get('/ai/stats')
+    return (response.data as ApiResponse<AIInvestigationStats>).data
   },
-
-  async generateRules(description: string) {
-    const response = await api.post('/ai/generate-rules', { description });
-    return response.data;
-  },
-};
+}

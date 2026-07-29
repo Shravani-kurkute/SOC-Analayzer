@@ -114,17 +114,38 @@ class Settings(BaseSettings):
         url = f"redis://{password}{values['REDIS_HOST']}:{values['REDIS_PORT']}/{values['REDIS_DB']}"
         return url
 
-    # AI
-    GEMINI_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-1.5-flash"
-    GEMINI_EMBEDDING_MODEL: str = "models/embedding-001"
-    GEMINI_MAX_TOKENS: int = 8192
-    GEMINI_TEMPERATURE: float = 0.2
+    # Threat Intelligence
+    VIRUSTOTAL_API_KEY: str = ""
+    VIRUSTOTAL_ENABLED: bool = True
+    ABUSEIPDB_API_KEY: str = ""
+    ABUSEIPDB_ENABLED: bool = True
+    ALIENVAULT_API_KEY: str = ""
+    ALIENVAULT_ENABLED: bool = True
+    THREAT_INTEL_CACHE_TTL_HOURS: int = 24
+    THREAT_INTEL_MOCK_MODE: bool = True
+
+    # AI Provider
+    AI_PROVIDER: str = "gemini"
     AI_ENABLED: bool = True
     AI_RATE_LIMIT_PER_MINUTE: int = 60
     AI_BATCH_SIZE: int = 10
     AI_CACHE_TTL_SECONDS: int = 3600
-    AI_FALLBACK_MODEL: str = "gemini-1.5-flash-8b"
+    AI_MAX_TOKENS: int = 4096
+    AI_TEMPERATURE: float = 0.3
+
+    # Google Gemini
+    GEMINI_API_KEY: str = ""
+    GEMINI_MODEL: str = "gemini-1.5-flash"
+    GEMINI_FALLBACK_MODEL: str = "gemini-1.5-flash-8b"
+
+    # OpenAI
+    OPENAI_API_KEY: str = ""
+    OPENAI_MODEL: str = "gpt-4o-mini"
+    OPENAI_ORG_ID: str = ""
+
+    # Ollama
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "llama3.2"
 
     # Logging & Monitoring
     LOG_LEVEL: str = "INFO"

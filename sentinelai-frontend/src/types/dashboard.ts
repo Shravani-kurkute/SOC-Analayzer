@@ -7,6 +7,10 @@ export interface DashboardSummary {
   low_alerts: number
   threat_score: number
   assets_monitored: number
+  threat_intel_total?: number
+  threat_intel_malicious?: number
+  ai_investigations?: number
+  avg_ai_confidence?: number
 }
 
 export interface ActivityPoint {
