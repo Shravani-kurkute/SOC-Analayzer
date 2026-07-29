@@ -18,7 +18,7 @@ import { StatCard } from '@components/common/StatCard'
 import { aiService } from '@services/aiService'
 import { incidentService } from '@services/incidentService'
 import type { AIInvestigation, Recommendation, HuntingQuery, TimelineEvent } from '@typings/ai'
-import type { Incident } from '@typings/incident'
+import type { IncidentListItem } from '@typings/incident'
 
 const PROVIDERS = [
   { value: 'gemini', label: 'Google Gemini', icon: Brain },
@@ -306,7 +306,7 @@ export default function AICenterPage() {
     pdf.save(`investigation-${investigation.incident_id.slice(0, 8)}.pdf`)
   }
 
-  const incidents: Incident[] = incidentsQuery.data || []
+  const incidents: IncidentListItem[] = incidentsQuery.data || []
   const stats = statsQuery.data
   const history = historyQuery.data
 

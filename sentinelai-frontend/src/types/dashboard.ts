@@ -11,6 +11,12 @@ export interface DashboardSummary {
   threat_intel_malicious?: number
   ai_investigations?: number
   avg_ai_confidence?: number
+  total_incidents?: number
+  open_incidents?: number
+  critical_incidents?: number
+  avg_resolution_seconds?: number | null
+  incidents_by_status?: Record<string, number>
+  incidents_by_severity?: Record<string, number>
 }
 
 export interface ActivityPoint {

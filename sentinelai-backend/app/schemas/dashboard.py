@@ -15,6 +15,12 @@ class DashboardSummary(BaseSchema):
     threat_intel_malicious: int = 0
     ai_investigations: int = 0
     avg_ai_confidence: float = 0.0
+    total_incidents: int = 0
+    open_incidents: int = 0
+    critical_incidents: int = 0
+    avg_resolution_seconds: int | None = None
+    incidents_by_status: dict[str, int] = {}
+    incidents_by_severity: dict[str, int] = {}
 
 
 class ActivityPoint(BaseSchema):

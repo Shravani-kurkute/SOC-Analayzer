@@ -13,6 +13,7 @@ from app.models.incident import Incident
 from app.models.log_entry import LogEntry
 from app.models.threat_intel import ThreatIntel
 from app.models.user import User
+from sqlalchemy import extract
 from app.schemas.dashboard import (
     DashboardActivity,
     DashboardCharts,
@@ -65,6 +66,35 @@ async def get_dashboard_summary(
         .where(AIInvestigation.confidence_score.isnot(None))
     )
 
+    total_incidents = await db.scalar(select(func.count(Incident.id))) or 0
+    open_incidents = await db.scalar(
+        select(func.count(Incident.id)).where(
+            Incident.status.in_(["new", "assigned", "investigating", "contained", "eradiated", "recovered"])
+        )
+    ) or 0
+    critical_incidents = await db.scalar(
+        select(func.count(Incident.id)).where(Incident.severity == "critical")
+    ) or 0
+
+    avg_res_seconds = await db.scalar(
+        select(func.avg(
+            extract("epoch", Incident.closed_at - Incident.created_at)
+        )).where(
+            Incident.closed_at.isnot(None),
+            Incident.created_at.isnot(None),
+        )
+    )
+
+    by_status_rows = (await db.execute(
+        select(Incident.status, func.count(Incident.id)).group_by(Incident.status)
+    )).all()
+    incidents_by_status = {r[0]: r[1] for r in by_status_rows}
+
+    by_severity_rows = (await db.execute(
+        select(Incident.severity, func.count(Incident.id)).group_by(Incident.severity)
+    )).all()
+    incidents_by_severity = {r[0]: r[1] for r in by_severity_rows}
+
     return DashboardSummary(
         total_logs_processed=total_logs or 0,
         active_incidents=active_incidents or 0,
@@ -78,6 +108,12 @@ async def get_dashboard_summary(
         threat_intel_malicious=ti_malicious or 0,
         ai_investigations=ai_total or 0,
         avg_ai_confidence=round(float(avg_ai_conf or 0.0), 4),
+        total_incidents=total_incidents,
+        open_incidents=open_incidents,
+        critical_incidents=critical_incidents,
+        avg_resolution_seconds=int(avg_res_seconds) if avg_res_seconds else None,
+        incidents_by_status=incidents_by_status,
+        incidents_by_severity=incidents_by_severity,
     )
 
 
