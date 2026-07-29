@@ -25,6 +25,7 @@ const AICenter = lazy(() => import('@pages/ai/AICenterPage'));
 const LogCollection = lazy(() => import('@pages/logs/LogCollectionPage'));
 const Correlation = lazy(() => import('@pages/correlation/CorrelationPage'));
 const IocExplorer = lazy(() => import('@pages/ioc/IocPage'));
+const MitreExplorer = lazy(() => import('@pages/mitre/MitrePage'));
 const Playbooks = lazy(() => import('@pages/playbooks/PlaybooksPage'));
 const PlaybookDetail = lazy(() => import('@pages/playbooks/PlaybookDetailPage'));
 const Integrations = lazy(() => import('@pages/integrations/IntegrationsPage'));
@@ -89,6 +90,14 @@ export default function App() {
                       element={
                         <Suspense fallback={<PageLoader />}>
                           <IocExplorer />
+                        </Suspense>
+                      }
+                    />
+                  <Route
+                      path="/mitre"
+                      element={
+                        <Suspense fallback={<PageLoader />}>
+                          <MitreExplorer />
                         </Suspense>
                       }
                     />

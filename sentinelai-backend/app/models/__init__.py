@@ -9,9 +9,11 @@ from app.models.ingestion_job import IngestionJob
 from app.models.correlation_group import CorrelationGroup
 from app.models.correlation_event import CorrelationEvent
 from app.models.ioc_entry import IocEntry
+from app.models.mitre_technique import MitreTechnique, MitreMapping, CoverageStatistic
 
 __all__ = [
     "User", "Alert", "Incident", "LogEntry", "Asset",
     "LogSource", "LogFile", "IngestionJob",
     "CorrelationGroup", "CorrelationEvent", "IocEntry",
+    "MitreTechnique", "MitreMapping", "CoverageStatistic",
 ]
