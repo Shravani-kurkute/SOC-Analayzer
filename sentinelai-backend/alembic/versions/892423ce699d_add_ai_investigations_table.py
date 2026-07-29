@@ -18,7 +18,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     op.create_table('ai_investigations',
-    sa.Column('incident_id', sa.String(length=36), nullable=False),
+    sa.Column('incident_id', sa.UUID(as_uuid=False), nullable=False),
     sa.Column('provider', sa.String(length=50), nullable=False),
     sa.Column('prompt', sa.Text(), nullable=False),
     sa.Column('response', sa.Text(), nullable=True),

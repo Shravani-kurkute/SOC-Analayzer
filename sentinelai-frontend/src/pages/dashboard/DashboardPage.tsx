@@ -34,6 +34,7 @@ import { PageHeader } from '@components/common/PageHeader'
 import { mitreService } from '@services/mitreService'
 import { iocService } from '@services/iocService'
 import { dashboardService } from '@services/dashboardService'
+import { reportService } from '@services/reportService'
 import type {
   RecentAlertItem,
   RecentIncidentItem,
@@ -198,6 +199,12 @@ export default function DashboardPage() {
     refetchInterval: 60_000,
   })
 
+  const reportStatsQuery = useQuery({
+    queryKey: ['dashboard-report-stats'],
+    queryFn: () => reportService.getDashboardStats(),
+    refetchInterval: 30_000,
+  })
+
   const summary = summaryQuery.data
   const charts = chartsQuery.data
   const iocStats = iocStatsQuery.data
@@ -333,6 +340,15 @@ export default function DashboardPage() {
           <StatCard title="Open Incidents" value={formatNumber(summary.open_incidents ?? 0)} description="Requiring action" icon={AlertTriangle} variant="warning" />
           <StatCard title="Critical Incidents" value={formatNumber(summary.critical_incidents ?? 0)} description="Immediate attention" icon={Siren} variant="danger" />
           <StatCard title="Avg Resolution" value={summary.avg_resolution_seconds ? formatDuration(summary.avg_resolution_seconds) : 'N/A'} description="Mean time to resolve" icon={Clock} variant="default" />
+        </div>
+      )}
+
+      {reportStatsQuery.data && (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard title="Reports Generated" value={formatNumber(reportStatsQuery.data.total_reports)} description="All time" icon={FileText} variant="info" />
+          <StatCard title="Generated Today" value={formatNumber(reportStatsQuery.data.reports_today)} description="Reports created today" icon={TrendingUp} variant="success" />
+          <StatCard title="Most Downloaded" value={reportStatsQuery.data.most_downloaded[0]?.title || 'N/A'} description={reportStatsQuery.data.most_downloaded[0] ? `${reportStatsQuery.data.most_downloaded[0].download_count} downloads` : 'No downloads yet'} icon={Download} variant="default" />
+          <StatCard title="Recent Reports" value={formatNumber(reportStatsQuery.data.recent_reports.length)} description="Last 5 reports" icon={FileText} variant="info" />
         </div>
       )}
 
