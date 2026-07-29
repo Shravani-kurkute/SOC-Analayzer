@@ -17,6 +17,7 @@ import {
   TrendingUp,
   Network,
   Hash,
+  Target,
 } from 'lucide-react'
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
@@ -28,6 +29,7 @@ import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import { Skeleton } from '@components/ui/skeleton'
 import { PageHeader } from '@components/common/PageHeader'
+import { mitreService } from '@services/mitreService'
 import { iocService } from '@services/iocService'
 import { dashboardService } from '@services/dashboardService'
 import type {
@@ -181,9 +183,16 @@ export default function DashboardPage() {
     refetchInterval: 30_000,
   })
 
+  const mitreCoverageQuery = useQuery({
+    queryKey: ['dashboard-mitre-coverage'],
+    queryFn: mitreService.getCoverage,
+    refetchInterval: 60_000,
+  })
+
   const summary = summaryQuery.data
   const charts = chartsQuery.data
   const iocStats = iocStatsQuery.data
+  const mitreCoverage = mitreCoverageQuery.data
 
   return (
     <div className="space-y-6">
@@ -288,6 +297,17 @@ export default function DashboardPage() {
           <StatCard title="Unique IPs" value={formatNumber(iocStats.unique_ips)} description="IPv4 & IPv6 addresses" icon={Globe} variant="info" />
           <StatCard title="Unique Domains" value={formatNumber(iocStats.unique_domains)} description="Domain indicators" icon={Globe} variant="warning" />
           <StatCard title="Unique Hashes" value={formatNumber(iocStats.unique_hashes)} description="MD5, SHA1, SHA256" icon={Hash} variant="danger" />
+        </div>
+      )}
+
+      {mitreCoverage && (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard title="ATT&CK Coverage" value={`${mitreCoverage.overall_coverage.toFixed(1)}%`}
+            description={`${mitreCoverage.total_mapped}/${mitreCoverage.total_techniques} techniques`}
+            icon={Target} variant={mitreCoverage.overall_coverage >= 50 ? 'success' : 'warning'} />
+          <StatCard title="Total Techniques" value={formatNumber(mitreCoverage.total_techniques)} description="MITRE ATT&CK v15.1" icon={Hash} variant="info" />
+          <StatCard title="Mapped Techniques" value={formatNumber(mitreCoverage.total_mapped)} description="With detection coverage" icon={Target} variant="info" />
+          <StatCard title="Total Detections" value={formatNumber(mitreCoverage.total_detections)} description="Mapped to MITRE techniques" icon={Activity} variant="info" />
         </div>
       )}
 
