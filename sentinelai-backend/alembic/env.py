@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from app.core.config import settings
 from app.database.session import Base
 
-from app.models import User, Alert, Incident, LogEntry, Asset, LogSource, LogFile, IngestionJob, CorrelationGroup, CorrelationEvent, ThreatIntel, ThreatProviderResult, LookupHistory, AIInvestigation  # noqa: F401 — required for Alembic to detect models
+from app.models import User, Alert, Incident, LogEntry, Asset, LogSource, LogFile, IngestionJob, CorrelationGroup, CorrelationEvent, ThreatIntel, ThreatProviderResult, LookupHistory, AIInvestigation, IncidentComment, IncidentTask, IncidentEvidence, IncidentTimeline  # noqa: F401 — required for Alembic to detect models
 
 config = context.config
 config.set_main_option("sqlalchemy.url", str(settings.DATABASE_URL))

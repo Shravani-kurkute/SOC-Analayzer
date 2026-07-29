@@ -13,6 +13,10 @@ from app.models.mitre_technique import MitreTechnique, MitreMapping, CoverageSta
 from app.models.parsed_event import ParsedEvent
 from app.models.threat_intel import ThreatIntel, ThreatProviderResult, LookupHistory
 from app.models.ai_investigation import AIInvestigation
+from app.models.incident_comment import IncidentComment
+from app.models.incident_task import IncidentTask
+from app.models.incident_evidence import IncidentEvidence
+from app.models.incident_timeline import IncidentTimeline
 
 __all__ = [
     "User", "Alert", "Incident", "LogEntry", "Asset",
@@ -21,4 +25,5 @@ __all__ = [
     "MitreTechnique", "MitreMapping", "CoverageStatistic",
     "ThreatIntel", "ThreatProviderResult", "LookupHistory",
     "AIInvestigation",
+    "IncidentComment", "IncidentTask", "IncidentEvidence", "IncidentTimeline",
 ]
