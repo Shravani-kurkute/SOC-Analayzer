@@ -11,6 +11,10 @@ class DashboardSummary(BaseSchema):
     low_alerts: int
     threat_score: float
     assets_monitored: int
+    threat_intel_total: int = 0
+    threat_intel_malicious: int = 0
+    ai_investigations: int = 0
+    avg_ai_confidence: float = 0.0
 
 
 class ActivityPoint(BaseSchema):

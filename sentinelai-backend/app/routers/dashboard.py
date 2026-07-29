@@ -6,10 +6,12 @@ from sqlalchemy import case, func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import get_current_user, get_db
+from app.models.ai_investigation import AIInvestigation
 from app.models.alert import Alert
 from app.models.asset import Asset
 from app.models.incident import Incident
 from app.models.log_entry import LogEntry
+from app.models.threat_intel import ThreatIntel
 from app.models.user import User
 from app.schemas.dashboard import (
     DashboardActivity,
@@ -52,6 +54,17 @@ async def get_dashboard_summary(
     threat_score = min(100.0, (total_alerts / max((await db.scalar(select(func.count(Alert.id)))) or 1, 1)) * 100) if total_alerts > 0 else 0.0
     assets_monitored = await db.scalar(select(func.count(Asset.id)))
 
+    ti_total = await db.scalar(select(func.count(ThreatIntel.id)))
+    ti_malicious = await db.scalar(
+        select(func.count(ThreatIntel.id)).where(ThreatIntel.is_malicious == True)
+    )
+
+    ai_total = await db.scalar(select(func.count(AIInvestigation.id)))
+    avg_ai_conf = await db.scalar(
+        select(func.avg(AIInvestigation.confidence_score))
+        .where(AIInvestigation.confidence_score.isnot(None))
+    )
+
     return DashboardSummary(
         total_logs_processed=total_logs or 0,
         active_incidents=active_incidents or 0,
@@ -61,6 +74,10 @@ async def get_dashboard_summary(
         low_alerts=low or 0,
         threat_score=round(threat_score, 1),
         assets_monitored=assets_monitored or 0,
+        threat_intel_total=ti_total or 0,
+        threat_intel_malicious=ti_malicious or 0,
+        ai_investigations=ai_total or 0,
+        avg_ai_confidence=round(float(avg_ai_conf or 0.0), 4),
     )
 
 

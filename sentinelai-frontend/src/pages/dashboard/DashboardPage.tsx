@@ -18,6 +18,8 @@ import {
   Network,
   Hash,
   Target,
+  Brain,
+  Gauge,
 } from 'lucide-react'
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
@@ -308,6 +310,13 @@ export default function DashboardPage() {
           <StatCard title="Total Techniques" value={formatNumber(mitreCoverage.total_techniques)} description="MITRE ATT&CK v15.1" icon={Hash} variant="info" />
           <StatCard title="Mapped Techniques" value={formatNumber(mitreCoverage.total_mapped)} description="With detection coverage" icon={Target} variant="info" />
           <StatCard title="Total Detections" value={formatNumber(mitreCoverage.total_detections)} description="Mapped to MITRE techniques" icon={Activity} variant="info" />
+        </div>
+      )}
+
+      {summary && (summary.ai_investigations !== undefined) && (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard title="AI Investigations" value={formatNumber(summary.ai_investigations ?? 0)} description="Total AI investigations" icon={Brain} variant="info" />
+          <StatCard title="Avg Confidence" value={summary.avg_ai_confidence ? `${(summary.avg_ai_confidence * 100).toFixed(1)}%` : '0%'} description="AI confidence score" icon={Gauge} variant={summary.avg_ai_confidence && summary.avg_ai_confidence > 0.7 ? 'success' : 'warning'} />
         </div>
       )}
 

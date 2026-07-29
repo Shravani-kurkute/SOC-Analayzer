@@ -11,10 +11,14 @@ from app.models.correlation_event import CorrelationEvent
 from app.models.ioc_entry import IocEntry
 from app.models.mitre_technique import MitreTechnique, MitreMapping, CoverageStatistic
 from app.models.parsed_event import ParsedEvent
+from app.models.threat_intel import ThreatIntel, ThreatProviderResult, LookupHistory
+from app.models.ai_investigation import AIInvestigation
 
 __all__ = [
     "User", "Alert", "Incident", "LogEntry", "Asset",
     "LogSource", "LogFile", "IngestionJob",
     "CorrelationGroup", "CorrelationEvent", "IocEntry",
     "MitreTechnique", "MitreMapping", "CoverageStatistic",
+    "ThreatIntel", "ThreatProviderResult", "LookupHistory",
+    "AIInvestigation",
 ]
