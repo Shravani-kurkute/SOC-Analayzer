@@ -13,6 +13,7 @@ from app.models.incident import Incident
 from app.models.log_entry import LogEntry
 from app.models.threat_intel import ThreatIntel
 from app.models.user import User
+from app.models.generated_report import GeneratedReport
 from sqlalchemy import extract
 from app.schemas.dashboard import (
     DashboardActivity,
@@ -366,3 +367,43 @@ async def get_most_active_ips(
         )
 
     return result
+
+
+@router.get("/report-stats")
+async def get_dashboard_report_stats(
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_user)],
+):
+    total_reports = await db.scalar(select(func.count(GeneratedReport.id))) or 0
+
+    from datetime import datetime, timezone
+    today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+    reports_today = await db.scalar(
+        select(func.count(GeneratedReport.id)).where(GeneratedReport.created_at >= today_start)
+    ) or 0
+
+    most_downloaded = (await db.execute(
+        select(GeneratedReport)
+        .order_by(GeneratedReport.download_count.desc())
+        .limit(5)
+    )).scalars().all()
+
+    recent = (await db.execute(
+        select(GeneratedReport)
+        .order_by(GeneratedReport.created_at.desc())
+        .limit(5)
+    )).scalars().all()
+
+    return {
+        "total_reports": total_reports,
+        "reports_today": reports_today,
+        "most_downloaded": [
+            {"id": r.id, "title": r.title, "report_type": r.report_type, "format": r.format,
+             "download_count": r.download_count}
+            for r in most_downloaded
+        ],
+        "recent_reports": [
+            {"id": r.id, "title": r.title, "report_type": r.report_type, "format": r.format}
+            for r in recent
+        ],
+    }

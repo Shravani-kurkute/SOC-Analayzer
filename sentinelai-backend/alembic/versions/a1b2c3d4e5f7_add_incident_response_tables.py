@@ -18,8 +18,8 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     op.create_table('incident_comments',
-        sa.Column('incident_id', sa.String(length=36), nullable=False),
-        sa.Column('author_id', sa.String(length=36), nullable=True),
+        sa.Column('incident_id', sa.UUID(as_uuid=False), nullable=False),
+        sa.Column('author_id', sa.UUID(as_uuid=False), nullable=True),
         sa.Column('author_name', sa.String(length=255), nullable=False),
         sa.Column('content', sa.Text(), nullable=False),
         sa.Column('is_edited', sa.Boolean(), nullable=False),
@@ -36,12 +36,12 @@ def upgrade() -> None:
     op.create_index(op.f('ix_incident_comments_incident_id'), 'incident_comments', ['incident_id'], unique=False)
 
     op.create_table('incident_tasks',
-        sa.Column('incident_id', sa.String(length=36), nullable=False),
+        sa.Column('incident_id', sa.UUID(as_uuid=False), nullable=False),
         sa.Column('title', sa.String(length=500), nullable=False),
         sa.Column('description', sa.Text(), nullable=True),
         sa.Column('status', sa.String(length=30), nullable=False),
         sa.Column('priority', sa.String(length=20), nullable=False),
-        sa.Column('assignee_id', sa.String(length=36), nullable=True),
+        sa.Column('assignee_id', sa.UUID(as_uuid=False), nullable=True),
         sa.Column('assignee_name', sa.String(length=255), nullable=True),
         sa.Column('due_date', sa.DateTime(timezone=True), nullable=True),
         sa.Column('completed_at', sa.DateTime(timezone=True), nullable=True),
@@ -58,7 +58,7 @@ def upgrade() -> None:
     op.create_index(op.f('ix_incident_tasks_incident_id'), 'incident_tasks', ['incident_id'], unique=False)
 
     op.create_table('incident_evidence',
-        sa.Column('incident_id', sa.String(length=36), nullable=False),
+        sa.Column('incident_id', sa.UUID(as_uuid=False), nullable=False),
         sa.Column('filename', sa.String(length=500), nullable=False),
         sa.Column('file_type', sa.String(length=50), nullable=False),
         sa.Column('file_size', sa.BigInteger(), nullable=False),
@@ -78,7 +78,7 @@ def upgrade() -> None:
     op.create_index(op.f('ix_incident_evidence_incident_id'), 'incident_evidence', ['incident_id'], unique=False)
 
     op.create_table('incident_timeline',
-        sa.Column('incident_id', sa.String(length=36), nullable=False),
+        sa.Column('incident_id', sa.UUID(as_uuid=False), nullable=False),
         sa.Column('action', sa.String(length=100), nullable=False),
         sa.Column('actor', sa.String(length=255), nullable=False),
         sa.Column('details', sa.Text(), nullable=True),

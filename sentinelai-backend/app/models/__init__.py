@@ -17,6 +17,8 @@ from app.models.incident_comment import IncidentComment
 from app.models.incident_task import IncidentTask
 from app.models.incident_evidence import IncidentEvidence
 from app.models.incident_timeline import IncidentTimeline
+from app.models.generated_report import GeneratedReport
+from app.models.scheduled_report import ScheduledReport
 
 __all__ = [
     "User", "Alert", "Incident", "LogEntry", "Asset",
@@ -26,4 +28,5 @@ __all__ = [
     "ThreatIntel", "ThreatProviderResult", "LookupHistory",
     "AIInvestigation",
     "IncidentComment", "IncidentTask", "IncidentEvidence", "IncidentTimeline",
+    "GeneratedReport", "ScheduledReport",
 ]
