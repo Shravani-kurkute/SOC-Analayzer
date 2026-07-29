@@ -19,6 +19,7 @@ from app.models.incident_evidence import IncidentEvidence
 from app.models.incident_timeline import IncidentTimeline
 from app.models.generated_report import GeneratedReport
 from app.models.scheduled_report import ScheduledReport
+from app.models.notification import Notification, NotificationPreference
 
 __all__ = [
     "User", "Alert", "Incident", "LogEntry", "Asset",
@@ -29,4 +30,5 @@ __all__ = [
     "AIInvestigation",
     "IncidentComment", "IncidentTask", "IncidentEvidence", "IncidentTimeline",
     "GeneratedReport", "ScheduledReport",
+    "Notification", "NotificationPreference",
 ]

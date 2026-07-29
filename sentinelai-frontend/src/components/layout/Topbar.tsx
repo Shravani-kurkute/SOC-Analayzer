@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSidebar } from '@contexts/SidebarContext';
 import { useTheme } from '@contexts/ThemeContext';
 import { useAuth } from '@hooks/useAuth';
+import { useWebSocket } from '@contexts/WebSocketContext';
+import { notificationService } from '@services/notificationService';
 import { cn } from '@utils/cn';
 import {
   Menu,
@@ -19,10 +21,13 @@ import {
   Shield,
   AlertTriangle,
   MessageSquare,
+  CheckCheck,
+  Trash2,
+  Loader2,
+  Clock,
 } from 'lucide-react';
 import { Button } from '@components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Badge } from '@components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,6 +47,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from '@components/ui/command';
+import type { Notification } from '@typings/notification';
 
 
 const searchItems = [
@@ -65,41 +71,6 @@ const searchItems = [
   },
 ];
 
-const notifications = [
-  {
-    id: '1',
-    title: 'Critical Alert',
-    description: 'Multiple brute force attempts detected',
-    time: '2 min ago',
-    type: 'critical',
-    unread: true,
-  },
-  {
-    id: '2',
-    title: 'Incident Updated',
-    description: 'INC-2024-0421 escalated to high severity',
-    time: '15 min ago',
-    type: 'warning',
-    unread: true,
-  },
-  {
-    id: '3',
-    title: 'Threat Intel Update',
-    description: 'New IOC feed available from AlienVault',
-    time: '1 hour ago',
-    type: 'info',
-    unread: false,
-  },
-  {
-    id: '4',
-    title: 'System Notification',
-    description: 'Daily scan completed - 0 vulnerabilities found',
-    time: '2 hours ago',
-    type: 'success',
-    unread: false,
-  },
-];
-
 export function Topbar() {
   const { toggleMobile } = useSidebar();
   const { theme, toggleTheme } = useTheme();
@@ -107,6 +78,69 @@ export function Topbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notifLoading, setNotifLoading] = useState(false);
+  const { lastEvent } = useWebSocket();
+
+  const loadNotifications = useCallback(async () => {
+    setNotifLoading(true)
+    try {
+      const [listRes, countRes] = await Promise.all([
+        notificationService.list({ limit: 10 }),
+        notificationService.getUnreadCount(),
+      ])
+      setNotifications(listRes.items)
+      setUnreadCount(countRes.count)
+    } catch { /* ignore */ }
+    setNotifLoading(false)
+  }, [])
+
+  const loadUnreadCount = useCallback(async () => {
+    try {
+      const res = await notificationService.getUnreadCount()
+      setUnreadCount(res.count)
+    } catch { /* ignore */ }
+  }, [])
+
+  useEffect(() => { loadNotifications() }, [loadNotifications])
+
+  useEffect(() => {
+    if (lastEvent?.type === 'notification') {
+      loadUnreadCount()
+      setNotifications(prev => {
+        if (lastEvent.notification) {
+          return [lastEvent.notification, ...prev].slice(0, 50)
+        }
+        return prev
+      })
+    }
+  }, [lastEvent, loadUnreadCount])
+
+  const handleMarkAllRead = async () => {
+    await notificationService.markAllAsRead()
+    setNotifications(prev => prev.map(n => ({ ...n, is_read: true })))
+    setUnreadCount(0)
+  }
+
+  const handleClearAll = async () => {
+    await notificationService.clearAll()
+    setNotifications([])
+    setUnreadCount(0)
+  }
+
+  const handleMarkRead = async (id: string) => {
+    await notificationService.markAsRead(id)
+    setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n))
+    setUnreadCount(prev => Math.max(0, prev - 1))
+  }
+
+  const severityColor = (sev: string) => {
+    if (sev === 'critical') return 'bg-red-500'
+    if (sev === 'warning') return 'bg-orange-500'
+    if (sev === 'success') return 'bg-emerald-500'
+    return 'bg-blue-500'
+  }
 
   const getPageTitle = () => {
     const path = location.pathname;
@@ -177,48 +211,63 @@ export function Topbar() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="relative text-muted-foreground">
                 <Bell className="h-4.5 w-4.5" />
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
-                  3
-                </span>
+                {unreadCount > 0 && (
+                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-80">
               <DropdownMenuLabel className="flex items-center justify-between">
                 <span>Notifications</span>
-                <Badge variant="critical" className="text-[10px] px-1.5 py-0">
-                  3 new
-                </Badge>
+                <div className="flex items-center gap-1">
+                  {unreadCount > 0 && (
+                    <Button size="icon-sm" variant="ghost" onClick={handleMarkAllRead} title="Mark all as read">
+                      <CheckCheck className="h-3.5 w-3.5" />
+                    </Button>
+                  )}
+                  {notifications.length > 0 && (
+                    <Button size="icon-sm" variant="ghost" onClick={handleClearAll} title="Clear all">
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  )}
+                </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <div className="max-h-72 overflow-y-auto">
-                {notifications.map((notification) => (
-                  <DropdownMenuItem
-                    key={notification.id}
-                    className="flex flex-col items-start gap-1 p-3 cursor-pointer"
-                  >
-                    <div className="flex items-center gap-2 w-full">
-                      <div
-                        className={cn(
-                          'h-2 w-2 rounded-full shrink-0',
-                          notification.type === 'critical' && 'bg-red-500',
-                          notification.type === 'warning' && 'bg-orange-500',
-                          notification.type === 'info' && 'bg-blue-500',
-                          notification.type === 'success' && 'bg-emerald-500',
+                {notifLoading && notifications.length === 0 ? (
+                  <div className="flex justify-center py-4"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
+                ) : notifications.length === 0 ? (
+                  <div className="text-center py-6 text-sm text-muted-foreground">No notifications</div>
+                ) : (
+                  notifications.slice(0, 10).map((notification) => (
+                    <DropdownMenuItem
+                      key={notification.id}
+                      className="flex flex-col items-start gap-1 p-3 cursor-pointer"
+                      onClick={() => handleMarkRead(notification.id)}
+                    >
+                      <div className="flex items-center gap-2 w-full">
+                        <div className={cn('h-2 w-2 rounded-full shrink-0', severityColor(notification.severity))} />
+                        <span className="text-sm font-medium flex-1 truncate">{notification.title}</span>
+                        {!notification.is_read && (
+                          <span className="h-2 w-2 rounded-full bg-[#00F5FF]" />
                         )}
-                      />
-                      <span className="text-sm font-medium flex-1">{notification.title}</span>
-                      {notification.unread && (
-                        <span className="h-2 w-2 rounded-full bg-[#00F5FF]" />
+                      </div>
+                      {notification.message && (
+                        <p className="text-xs text-muted-foreground pl-4 truncate">{notification.message}</p>
                       )}
-                    </div>
-                    <p className="text-xs text-muted-foreground pl-4">{notification.description}</p>
-                    <span className="text-[10px] text-muted-foreground/60 pl-4">{notification.time}</span>
-                  </DropdownMenuItem>
-                ))}
+                      <span className="text-[10px] text-muted-foreground/60 pl-4 flex items-center gap-1">
+                        <Clock className="h-2.5 w-2.5" />
+                        {timeAgo(notification.created_at)}
+                      </span>
+                    </DropdownMenuItem>
+                  ))
+                )}
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="justify-center text-sm text-primary cursor-pointer">
-                View all notifications
+              <DropdownMenuItem className="justify-center text-sm text-primary cursor-pointer" onClick={() => navigate('/settings?tab=notifications')}>
+                Notification Settings
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -342,4 +391,16 @@ function FileText(props: React.SVGProps<SVGSVGElement>) {
       <polyline points="10 9 9 9 8 9" />
     </svg>
   );
+}
+
+function timeAgo(ts: string): string {
+  const diff = Date.now() - new Date(ts).getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 1) return 'Just now'
+  if (mins < 60) return `${mins}m ago`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24) return `${hrs}h ago`
+  const days = Math.floor(hrs / 24)
+  if (days < 30) return `${days}d ago`
+  return new Date(ts).toLocaleDateString()
 }
