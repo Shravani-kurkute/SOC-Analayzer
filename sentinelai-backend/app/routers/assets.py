@@ -79,7 +79,6 @@ async def create_asset_relationship(
         body.relationship_type, body.metadata_json,
     )
     return APIResponse(data=rel.to_dict(), message="Relationship created")
-    return APIResponse(data=rel.to_dict(), message="Relationship created")
 
 
 @router.get("", response_model=APIResponse[PaginatedResponse[AssetListItem]])

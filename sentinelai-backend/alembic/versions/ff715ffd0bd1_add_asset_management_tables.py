@@ -25,7 +25,7 @@ def upgrade() -> None:
 
     op.create_table('asset_risks',
         sa.Column('id', sa.UUID(as_uuid=False), nullable=False),
-        sa.Column('asset_id', sa.String(length=255), nullable=False, index=True),
+        sa.Column('asset_id', sa.String(length=255), nullable=False),
         sa.Column('risk_score', sa.Float(), nullable=False, server_default='0.0'),
         sa.Column('open_incidents', sa.Integer(), nullable=False, server_default='0'),
         sa.Column('critical_alerts', sa.Integer(), nullable=False, server_default='0'),
@@ -44,7 +44,7 @@ def upgrade() -> None:
 
     op.create_table('asset_owners',
         sa.Column('id', sa.UUID(as_uuid=False), nullable=False),
-        sa.Column('asset_id', sa.String(length=255), nullable=False, index=True),
+        sa.Column('asset_id', sa.String(length=255), nullable=False),
         sa.Column('name', sa.String(length=255), nullable=False),
         sa.Column('email', sa.String(length=255), nullable=True),
         sa.Column('role', sa.String(length=100), nullable=True),
@@ -72,7 +72,7 @@ def upgrade() -> None:
 
     op.create_table('asset_tags',
         sa.Column('id', sa.UUID(as_uuid=False), nullable=False),
-        sa.Column('asset_id', sa.String(length=255), nullable=False, index=True),
+        sa.Column('asset_id', sa.String(length=255), nullable=False),
         sa.Column('tag', sa.String(length=100), nullable=False),
         sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
         sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
@@ -84,8 +84,8 @@ def upgrade() -> None:
 
     op.create_table('asset_relationships',
         sa.Column('id', sa.UUID(as_uuid=False), nullable=False),
-        sa.Column('source_asset_id', sa.String(length=255), nullable=False, index=True),
-        sa.Column('target_asset_id', sa.String(length=255), nullable=False, index=True),
+        sa.Column('source_asset_id', sa.String(length=255), nullable=False),
+        sa.Column('target_asset_id', sa.String(length=255), nullable=False),
         sa.Column('relationship_type', sa.String(length=50), nullable=False),
         sa.Column('metadata_json', postgresql.JSONB(astext_type=sa.Text()), nullable=True),
         sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
@@ -99,7 +99,7 @@ def upgrade() -> None:
 
     op.create_table('asset_history',
         sa.Column('id', sa.UUID(as_uuid=False), nullable=False),
-        sa.Column('asset_id', sa.String(length=255), nullable=False, index=True),
+        sa.Column('asset_id', sa.String(length=255), nullable=False),
         sa.Column('field_name', sa.String(length=100), nullable=False),
         sa.Column('old_value', sa.Text(), nullable=True),
         sa.Column('new_value', sa.Text(), nullable=True),
