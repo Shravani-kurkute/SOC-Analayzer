@@ -18,6 +18,7 @@ const Threats = lazy(() => import('@pages/threats/ThreatsPage'));
 const ThreatDetail = lazy(() => import('@pages/threats/ThreatDetailPage'));
 const Assets = lazy(() => import('@pages/assets/AssetsPage'));
 const AssetDetail = lazy(() => import('@pages/assets/AssetDetailPage'));
+const AssetForm = lazy(() => import('@pages/assets/AssetFormPage'));
 const Reports = lazy(() => import('@pages/reports/ReportsPage'));
 const ReportBuilder = lazy(() => import('@pages/reports/ReportBuilderPage'));
 const Settings = lazy(() => import('@pages/settings/SettingsPage'));
@@ -154,6 +155,22 @@ export default function App() {
                     element={
                       <Suspense fallback={<PageLoader />}>
                         <Assets />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/assets/new"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <AssetForm />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/assets/:id/edit"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <AssetForm />
                       </Suspense>
                     }
                   />
