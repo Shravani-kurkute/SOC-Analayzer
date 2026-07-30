@@ -20,6 +20,7 @@ from app.models.incident_timeline import IncidentTimeline
 from app.models.generated_report import GeneratedReport
 from app.models.scheduled_report import ScheduledReport
 from app.models.notification import Notification, NotificationPreference
+from app.models.soar import Playbook, PlaybookExecution, PlaybookExecutionLog, ApprovalRequest, AutomationAction
 
 __all__ = [
     "User", "Alert", "Incident", "LogEntry", "Asset", "AssetRisk", "AssetOwner", "AssetGroup", "AssetTag", "AssetRelationship", "AssetHistory",
@@ -31,4 +32,5 @@ __all__ = [
     "IncidentComment", "IncidentTask", "IncidentEvidence", "IncidentTimeline",
     "GeneratedReport", "ScheduledReport",
     "Notification", "NotificationPreference",
+    "Playbook", "PlaybookExecution", "PlaybookExecutionLog", "ApprovalRequest", "AutomationAction",
 ]

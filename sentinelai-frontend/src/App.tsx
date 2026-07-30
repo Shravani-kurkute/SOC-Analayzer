@@ -29,6 +29,7 @@ const IocExplorer = lazy(() => import('@pages/ioc/IocPage'));
 const MitreExplorer = lazy(() => import('@pages/mitre/MitrePage'));
 const Playbooks = lazy(() => import('@pages/playbooks/PlaybooksPage'));
 const PlaybookDetail = lazy(() => import('@pages/playbooks/PlaybookDetailPage'));
+const PlaybookExecution = lazy(() => import('@pages/playbooks/PlaybookExecutionPage'));
 const Integrations = lazy(() => import('@pages/integrations/IntegrationsPage'));
 const Admin = lazy(() => import('@pages/admin/AdminPage'));
 const Login = lazy(() => import('@pages/auth/LoginPage'));
@@ -211,6 +212,14 @@ export default function App() {
                     element={
                       <Suspense fallback={<PageLoader />}>
                         <Playbooks />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/playbooks/executions/:id"
+                    element={
+                      <Suspense fallback={<PageLoader />}>
+                        <PlaybookExecution />
                       </Suspense>
                     }
                   />
