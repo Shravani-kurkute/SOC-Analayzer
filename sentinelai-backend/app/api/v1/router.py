@@ -21,7 +21,6 @@ from app.routers import (
     ioc,
     mitre,
     threat_intel,
-    notifications,
 )
 
 api_v1_router = APIRouter()
@@ -46,4 +45,3 @@ api_v1_router.include_router(correlation.router, prefix="/correlation", tags=["c
 api_v1_router.include_router(ioc.router, prefix="/ioc", tags=["ioc"])
 api_v1_router.include_router(mitre.router, prefix="/mitre", tags=["mitre"])
 api_v1_router.include_router(threat_intel.router, prefix="/threat-intelligence", tags=["threat-intelligence"])
-api_v1_router.include_router(notifications.router, prefix="/notifications", tags=["notifications"])
