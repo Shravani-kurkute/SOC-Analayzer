@@ -20,6 +20,7 @@ from app.routers import (
     correlation,
     ioc,
     mitre,
+    threat_intel,
 )
 
 api_v1_router = APIRouter()
@@ -43,3 +44,4 @@ api_v1_router.include_router(logs.router, prefix="/logs", tags=["logs"])
 api_v1_router.include_router(correlation.router, prefix="/correlation", tags=["correlation"])
 api_v1_router.include_router(ioc.router, prefix="/ioc", tags=["ioc"])
 api_v1_router.include_router(mitre.router, prefix="/mitre", tags=["mitre"])
+api_v1_router.include_router(threat_intel.router, prefix="/threat-intelligence", tags=["threat-intelligence"])

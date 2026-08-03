@@ -18,6 +18,8 @@ import {
   Network,
   Hash,
   Target,
+  Brain,
+  Gauge,
 } from 'lucide-react'
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
@@ -116,6 +118,13 @@ function formatNumber(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
   if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`
   return n.toLocaleString()
+}
+
+function formatDuration(seconds: number): string {
+  if (seconds < 60) return `${seconds}s`
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ${seconds % 60}s`
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ${Math.floor((seconds % 3600) / 60)}m`
+  return `${Math.floor(seconds / 86400)}d ${Math.floor((seconds % 86400) / 3600)}h`
 }
 
 function timeAgo(ts: string): string {
@@ -308,6 +317,22 @@ export default function DashboardPage() {
           <StatCard title="Total Techniques" value={formatNumber(mitreCoverage.total_techniques)} description="MITRE ATT&CK v15.1" icon={Hash} variant="info" />
           <StatCard title="Mapped Techniques" value={formatNumber(mitreCoverage.total_mapped)} description="With detection coverage" icon={Target} variant="info" />
           <StatCard title="Total Detections" value={formatNumber(mitreCoverage.total_detections)} description="Mapped to MITRE techniques" icon={Activity} variant="info" />
+        </div>
+      )}
+
+      {summary && (summary.ai_investigations !== undefined) && (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard title="AI Investigations" value={formatNumber(summary.ai_investigations ?? 0)} description="Total AI investigations" icon={Brain} variant="info" />
+          <StatCard title="Avg Confidence" value={summary.avg_ai_confidence ? `${(summary.avg_ai_confidence * 100).toFixed(1)}%` : '0%'} description="AI confidence score" icon={Gauge} variant={summary.avg_ai_confidence && summary.avg_ai_confidence > 0.7 ? 'success' : 'warning'} />
+        </div>
+      )}
+
+      {summary && (summary.total_incidents !== undefined) && (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard title="Total Incidents" value={formatNumber(summary.total_incidents ?? 0)} description="All recorded incidents" icon={Siren} variant="info" />
+          <StatCard title="Open Incidents" value={formatNumber(summary.open_incidents ?? 0)} description="Requiring action" icon={AlertTriangle} variant="warning" />
+          <StatCard title="Critical Incidents" value={formatNumber(summary.critical_incidents ?? 0)} description="Immediate attention" icon={Siren} variant="danger" />
+          <StatCard title="Avg Resolution" value={summary.avg_resolution_seconds ? formatDuration(summary.avg_resolution_seconds) : 'N/A'} description="Mean time to resolve" icon={Clock} variant="default" />
         </div>
       )}
 
